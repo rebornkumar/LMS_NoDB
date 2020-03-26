@@ -21,18 +21,28 @@ public class ApplicationController {
 
     @PostMapping(value = "/add")
     public HashMap<String,String> addBooks(@RequestBody List<Book> bookList) {
-        adminImpl.addBooks(bookList);
+        boolean success = adminImpl.addBooks(bookList);
         HashMap<String,String> response = new HashMap<String,String>();
-        response.put("status","Success");
+        if(success == true) {
+            response.put("status", "Success");
+        }
+        else {
+            response.put("status", "Failed");
+        }
         return response;
     }
 
     @DeleteMapping(value = "/remove")
     public HashMap<String, String> removeBook(@RequestParam String name, @RequestParam String author) {
-        adminImpl.removeBook(name,author);
+        boolean success = adminImpl.removeBook(name,author);
         HashMap<String,String> response = new HashMap<String,String>();
-        response.put("message","Book " + name + " is Deleted");
-        response.put("status","Success");
+        if(success == true) {
+            response.put("message", "Book " + name + " is Deleted");
+            response.put("status", "Success");
+        }
+        else {
+            response.put("status", "Failed");
+        }
         return response;
     }
 
@@ -42,12 +52,12 @@ public class ApplicationController {
     }
 
     @GetMapping(value = "/sort")
-    public List<Book> sortBooks(@RequestParam String sortBy, @RequestParam String sortMethod) {
-        return userImpl.getSortedBooks(sortBy, sortMethod);
+    public List<Book> sortBooks(@RequestParam String sortByParameter, @RequestParam String sortMethod) {
+        return userImpl.getSortedBooks(sortByParameter, sortMethod);
     }
 
     @GetMapping(value = "/search")
-    public List<Book> searchBook(@RequestParam String name, @RequestParam String author) {
-        return userImpl.searchBooks(name, author);
+    public List<Book> searchBook(@RequestParam String bookProperty, @RequestParam String bookValue) {
+        return userImpl.searchBooks(bookProperty, bookValue);
     }
 }
